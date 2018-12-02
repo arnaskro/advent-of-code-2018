@@ -1,6 +1,12 @@
 # Advent Of Code 2018
 My solution to advent of code 2018 tasks using JavaScript.
 
+## How to run
+1. Go inside a folder for the day in which you are insterested. ex. `cd day2`
+2. Change the `input.txt` to your input, or leave as it is.
+3. Run `node index`.
+4. Check the printed output for the results of both parts.
+
 ## Inital
 "We've detected some temporal anomalies," one of Santa's Elves at the Temporal Anomaly Research and Detection Instrument Station tells you. She sounded pretty worried when she called you down here. "At 500-year intervals into the past, someone has been changing Santa's history!"
 
