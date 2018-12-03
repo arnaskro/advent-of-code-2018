@@ -1,7 +1,8 @@
 var fs = require('fs');
 var input = fs.readFileSync('input.txt', 'utf8').split('\n');
 
-const part1 = () => {
+let overlaps = {};
+const run = () => {
   // Parse input
   var data = input.map(x => ({
     id: x.split('#')[1].split(' ')[0],
@@ -12,32 +13,50 @@ const part1 = () => {
   }))
 
   var board = {};
-  var x, posX, posY;
+  var posX, posY;
 
-  data.map(claim => {
+  data.map((claim) => {
+    overlaps[claim.id] = true;
+
     for (var i = 0; i < claim.width; i++) {
       posX = parseInt(claim.x) + i;
       board[posX] = board[posX] || {};
 
       for (var j = 0; j < claim.height; j++) {
         posY = parseInt(claim.y) + j;
-        board[posX][posY] = board[posX][posY] ? "X" : claim.id;
+
+        if (board[posX][posY]) {
+          if (Array.isArray(board[posX][posY])) {
+            if (board[posX][posY].indexOf(claim.id) == -1) {
+              board[posX][posY].push(claim.id);
+            }
+          } else {
+            board[posX][posY] = [board[posX][posY], claim.id];
+          }
+        } else {
+          board[posX][posY] = claim.id;
+        }
+
       }
     }
   })
 
-
-  printBoardAndCountX(board)
+  printBoardAndCountOverlaps(board)
 }
 
-const printBoardAndCountX = (board) => {
+const printBoardAndCountOverlaps = (board) => {
   let total = 0;
   
   for (var x = 0; x < 1000; x++) {
     var line = "";
     for (var y = 0; y < 1000; y++) {
-      if (board[y] && board[y][x] == "X") {
+      if (board[y] && Array.isArray(board[y][x])) {
         total++;
+        
+        for (var i = 0; i < board[y][x].length; i++) {
+          if (overlaps[board[y][x][i]])
+            delete overlaps[board[y][x][i]];
+        }
       }
 
       if (board[y] && board[y][x]) line += board[y][x] + " ";
@@ -48,7 +67,8 @@ const printBoardAndCountX = (board) => {
     // console.log(line)
   }
 
-  console.log(total)
+  console.log("Part1: " + total); // 111326
+  console.log("Part2: " + Object.keys(overlaps)) // 1019
 }
 
-part1(); // 111326
+run();
