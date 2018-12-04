@@ -30,11 +30,12 @@ const parseData = line => {
 };
 const sortByDate = (a, b) => a.date.isBefore(b.date) ? -1 : 1;
 
-const part1 = () => {
+const run = () => {
   let tempStartedSleeping, tempID, tempDiff, tempMinute;
   let sleepingEvents = {};
   let totalTimeSleeping = {};
   let data = input.map(parseData).sort(sortByDate)
+  let mostSleepyMinute = {id: 0, minute: 0, times: 0};
   
   data.map((event, i) => {
     
@@ -55,6 +56,11 @@ const part1 = () => {
           else totalTimeSleeping[tempID] = 1;
           
           tempStartedSleeping.add(1, 'minutes');
+
+          
+          if (mostSleepyMinute.times < sleepingEvents[tempID][tempMinute]) {
+            mostSleepyMinute = {id:tempID, minute: tempMinute, times: sleepingEvents[tempID][tempMinute] }
+          }
         }
       }; break;
       case types.GUARD_SHIFT: {
@@ -67,9 +73,10 @@ const part1 = () => {
   
   let mostSleepyGuard = Object.keys(totalTimeSleeping).reduce((a, b) => totalTimeSleeping[a] < totalTimeSleeping[b] ? b : a);
   
-  let sleepiestMinute = Object.keys(sleepingEvents[mostSleepyGuard]).reduce((a, b) => sleepingEvents[mostSleepyGuard][a] > sleepingEvents[mostSleepyGuard][b] ? a : b)
+  let mostSleepiesGuardsMinute = Object.keys(sleepingEvents[mostSleepyGuard]).reduce((a, b) => sleepingEvents[mostSleepyGuard][a] > sleepingEvents[mostSleepyGuard][b] ? a : b)
 
-  console.log("Part1: " + sleepiestMinute * mostSleepyGuard) // 95199
+  console.log("Part1: " + mostSleepiesGuardsMinute * mostSleepyGuard) // 95199
+  console.log("Part2: " + mostSleepyMinute.id * mostSleepyMinute.minute) // 7887
 }
 
-part1();
+run();
