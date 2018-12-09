@@ -38,3 +38,4 @@ const findHighestScore = (players, lastMarbleWorth) => {
 }
 
 console.log("Part1: " + findHighestScore(459, 71320)); // 375414
+console.log("Part2: " + findHighestScore(459, 71320 * 100)); // 3168033673
