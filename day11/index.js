@@ -33,3 +33,23 @@ let part1 = () => {
 }
 
 console.log("Part1: " + part1()) // 235,16
+
+let part2 = () => {
+  let largest = {x:0,y:0,power:0,size:0};
+  let power = 0;
+  
+  for (var size = 1; size < 18; size++)
+    for (var x = 1; x < 301-size; x++)
+      for (var y = 1; y < 301-size; y++) {
+        power = 0;
+        for (var row = 0; row < size; row++)
+          for (var col = 0; col < size; col++)
+            power += grid[x+row][y+col]
+    
+        if (power > largest.power) largest = {x,y,power,size}
+      }
+  
+  return `${largest.x},${largest.y},${largest.size}`;
+}
+
+console.log("Part2: " + part2()) // 236,227,14
